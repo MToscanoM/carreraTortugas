@@ -2,10 +2,10 @@ import turtle
 import random
 
 class Circuito():
-    corredores = []
+    runners = {}
     __posStartY = (-30, -10, 10, 30)
-    __colorTurtle = ('red', 'blue', 'purple', 'orange')
-    __nombreTortuga = ('Raphael', 'Leonardo', 'Donatello', 'MichelAngelo')
+    __turtleColor = ('red', 'blue', 'purple', 'orange')
+    __turtleName= ('Raphael', 'Leonardo', 'Donatello', 'MichelAngelo')
     
     def __init__(self, width, height):
         self.__screen = turtle.Screen()
@@ -17,31 +17,36 @@ class Circuito():
         self.__createRunners()
         
     def __createRunners(self):
+        turtles = []
         for i in range(4):
-            new_turtle = turtle.Turtle()
-            new_turtle.shape('turtle')
-            new_turtle.color(self.__colorTurtle[i])
-            new_turtle.penup()
-            new_turtle.setpos(self.__startLine, self.__posStartY[i])
+            newTurtle = turtle.Turtle()
+            newTurtle.shape('turtle')
+            newTurtle.color(self.__turtleColor[i])
+            newTurtle.penup()
+            newTurtle.setpos(self.__startLine, self.__posStartY[i])
             
-            self.corredores.append(new_turtle)
+            turtles.append(newTurtle)
+
+        self.runners = (dict(zip(self.__turtleName, turtles)))
+
 
     def competir(self):
         hayGanador = False
-        
+
         while not hayGanador:
-            for tortuga in self.corredores:
-                tortuga.pendown()
+            for runnerName, runner in self.runners.items():
+                runner.pendown()
                 avance = random.randint(1, 6)
-                tortuga.forward(avance)
-                
-                if tortuga.position()[0] >= self.__finishLine:
+                runner.forward(avance)
+            
+                if runner.position()[0] >= self.__finishLine:
                     hayGanador = True
-                    print("¡¡Ha ganado la tortuga {}!!".format(tortuga.color()[0]))                    
-        
+
+                    print("¡¡Ha ganado {}!!".format(runnerName))                    
+    
 
 if __name__ == '__main__':
     circuito = Circuito(640, 480)
     circuito.competir()
-    
+
     
